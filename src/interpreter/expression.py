@@ -1,60 +1,29 @@
-# imports
-from src.interpreter.block import Block # import block structure
-import random # used in random and maybe randint?
+# imports -- TODO: split this
+from typing import Union
+from typing import List
+
 
 # expression defining
-def Expression(block: Block, codebase):
-    if block.function == "DEFINE":
-        print("DEFINE", block.debug_print_children())
-        codebase.variables[block.children[0].line] = block.children[1].line
-    elif block.function == "VAR":
-        print("VAR", block.debug_print_children())
-        return codebase.variables[block.children[0].line]
-    elif block.function == "MATH":
-        return None
-    elif block.function == "COMPARE":
-        return None
-    elif block.function == "IF":
-        return None
-    elif block.function == "ARRAY":
-        return None
-    elif block.function == "CHOOSE":
-        return None
-    elif block.function == "CHOOSECHAR":
-        return None
-    elif block.function == "REPEAT":
-        return None
-    elif block.function == "CONCAT":
-        # UNFINISHED
-        print("CONCAT", block.children[0].line, block.children[1].line)
-        buffer = ""
-        for i in block.children:
-            print("CONCAT_i", i.line)
-            buffer += Expression(i, codebase)
-        return buffer
-    elif block.function == "RANDINT":
-        return random.randint(int(block.children[0].line), int(block.children[1].line)) #TODO: add seeds to these, maybe?
-    elif block.function == "RANDOM":
-        return random.uniform(float(block.children[0].line), float(block.children[1].line)) 
-    elif block.function == "FLOOR":
-        return None
-    elif block.function == "CEIL":
-        return None
-    elif block.function == "ROUND":
-        return None
-    elif block.function == "INDEX":
-        return None
-    elif block.function == "ABS":
-        return None
-    elif block.function == "ARGS":
-        return None
-    elif block.function == "GLOBAL" and block[1] == "DEFINE":
-        return None
-    elif block.function == "GLOBAL" and block[1] == "VAR":
-        return None
-    elif block.function == "#":
-        return None # this is comments
-    elif block.function == "MOD":
-        return None
+import src.interpreter.function_deco
+
+
+def Expression(block: Union[List, str], codebase):
+    # TODO: try/except needed
+
+    # Literal or Numeral
+    if type(block) != list:
+        if block.isnumeric():
+            # TODO: Better way of doing this (without try/except)
+            try:
+                return int(block)
+            except ValueError:
+                return float(block)
+        else:
+            return block
+
+    functionWanted = src.interpreter.function_deco.functions.get(block[0])
+    print(functionWanted)
+    if functionWanted is not None:
+        return functionWanted(block, codebase)
     else:
-        return block.function
+        return block[0]
