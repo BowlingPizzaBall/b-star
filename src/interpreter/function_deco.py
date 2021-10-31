@@ -1,3 +1,5 @@
+# from src.interpreter.functions.func import func
+from src.interpreter.functions.map import map_func
 from src.interpreter.functions.math.abs import abs_func
 from src.interpreter.functions.args import args
 from src.interpreter.functions.array import array
@@ -51,6 +53,7 @@ def setupFunctions():
     addFunction("index", index)
     addFunction("j", j)
     addFunction("math", math)
+    addFunction("map", map_func)
     addFunction("mod", mod)
     addFunction("mul", mul)
     addFunction("pow", pow_func)
