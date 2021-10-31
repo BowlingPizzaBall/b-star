@@ -27,6 +27,7 @@ from src.interpreter.functions.repeat import repeat
 from src.interpreter.functions.round import round_func
 from src.interpreter.functions.time import time
 from src.interpreter.functions.var import var
+from src.interpreter.functions.image import image
 
 functions = {}
 
@@ -61,6 +62,7 @@ def setupFunctions():
     addFunction("time", time)
     addFunction("var", var)
     addFunction("#", comment)
+    addFunction("image", image)
 
 
 def addFunction(name: str, func):
